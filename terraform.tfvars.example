@@ -1,0 +1,8 @@
+project_id   = "your-project"
+region       = "europe-west4"
+zone         = "europe-west4-a"
+jumpbox_name = "jumpbox"
+machine_type = "e2-micro"
+image        = "debian-cloud/debian-12"
+network_name = "terraform-network"
+google_credentials = "/Path/to/service/account/key/json"
