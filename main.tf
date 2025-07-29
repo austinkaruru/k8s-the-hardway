@@ -36,24 +36,19 @@ resource "google_compute_firewall" "k8s_firewall" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-module "jumpbox" {
-  source       = "./modules/jumpbox"
-  network_name = google_compute_network.tf_network.self_link
-  tf_sa        = data.google_service_account.tf_sa.email
-  jumpbox_name = var.jumpbox_name
-  jumpbox_machine_type = var.jumpbox_machine_type
-  region       = var.region
-  zone         = var.zone
-  debian       = data.google_compute_image.debian.self_link
-}
 
-module "server" {
-  source = "./modules/server"
-  network_name = google_compute_network.tf_network.self_link
-  tf_sa        = data.google_service_account.tf_sa.email
-  server_name  = var.server_name
-  server_machine_type = var.server_machine_type
-  region       = var.region
-  zone         = var.zone
-  debian       = data.google_compute_image.debian.self_link
+
+module "gce" {
+  source = "./modules/gce"
+  for_each = var.vms
+
+  node_name = each.value.name
+  region = var.region
+  zone = var.zone
+  debian = data.google_compute_image.debian.self_link
+  machine_type = each.value.machine_type
+  network_name = var.network_name
+  tf_sa = data.google_service_account.tf_sa.email
+  size = each.value.disk_size_gb
+
 }

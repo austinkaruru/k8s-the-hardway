@@ -21,19 +21,37 @@ variable "zone" {
   description = "The Google Cloud zone where resources will be created."
   default     = "europe-west4-a"
 }
-variable "jumpbox_name" {
-  description = "The name of the jumpbox instance."
-  default     = "jumpbox"
-}
-variable "jumpbox_machine_type" {
-  description = "The machine type for the instances."
-  default     = "e2-micro"
+variable "vms" {
+  description = "VM configurations (name, machine type, disk size)"
+  type = map(object({
+    name          = string
+    machine_type  = string
+    disk_size_gb  = number
+  }))
+  default = {
+    jumpbox = {
+      name         = "jumpbox"
+      machine_type = "e2-micro"
+      disk_size_gb = 10
+    },
+    server = {
+      name         = "server"
+      machine_type = "e2-small"
+      disk_size_gb = 20
+    },
+    node-0 = {
+      name         = "node-0"
+      machine_type = "e2-medium"
+      disk_size_gb = 20
+    },
+    node-1 = {
+      name         = "node-1"
+      machine_type = "e2-medium"
+      disk_size_gb = 20
+    }
+  }
 }
 
-variable "server_machine_type" {
-  description = "The machine type for the server instances."
-  default     = "e2-small"
-}
 variable "network_name" {
   description = "The name of the network to create."
 }
@@ -47,9 +65,4 @@ variable "google_credentials" {
 variable "sa_account" {
   description = "The service account to use for the Google Cloud resources."
   type        = string
-}
-
-variable "server_name" {
-  description = "The name of the server instance."
-  default     = "server"
 }
