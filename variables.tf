@@ -25,9 +25,14 @@ variable "jumpbox_name" {
   description = "The name of the jumpbox instance."
   default     = "jumpbox"
 }
-variable "machine_type" {
+variable "jumpbox_machine_type" {
   description = "The machine type for the instances."
-  default     = "e2-medium"
+  default     = "e2-micro"
+}
+
+variable "server_machine_type" {
+  description = "The machine type for the server instances."
+  default     = "e2-small"
 }
 variable "network_name" {
   description = "The name of the network to create."
@@ -42,4 +47,9 @@ variable "google_credentials" {
 variable "sa_account" {
   description = "The service account to use for the Google Cloud resources."
   type        = string
+}
+
+variable "server_name" {
+  description = "The name of the server instance."
+  default     = "server"
 }

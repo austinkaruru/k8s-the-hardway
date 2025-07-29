@@ -3,22 +3,18 @@ resource "google_compute_address" "jumpbox_ip" {
   region = var.region
 }
 
-data "google_compute_image" "debian" {
-  family  = "debian-12"
-  project = "debian-cloud"
-}
 
 resource "google_compute_disk" "jumpbox_disk" {
   name  = "${var.jumpbox_name}-disk"
   type  = "pd-standard"
-  image = data.google_compute_image.debian.self_link
+  image = var.debian
   zone  = var.zone
   size  = 10
 }
 
 resource "google_compute_instance" "jumpbox" {
   name                      = var.jumpbox_name
-  machine_type              = var.machine_type
+  machine_type              = var.jumpbox_machine_type
   zone                      = var.zone
   tags                      = ["k8s-thw"]
   allow_stopping_for_update = true

@@ -14,6 +14,11 @@ resource "google_compute_project_metadata" "my_ssh_key" {
 data "google_service_account" "tf_sa" {
   account_id = var.sa_account
 }
+
+data "google_compute_image" "debian" {
+  family  = "debian-11"
+  project = "debian-cloud"
+}
 resource "google_compute_network" "tf_network" {
   name                    = var.network_name
   auto_create_subnetworks = true
@@ -36,8 +41,19 @@ module "jumpbox" {
   network_name = google_compute_network.tf_network.self_link
   tf_sa        = data.google_service_account.tf_sa.email
   jumpbox_name = var.jumpbox_name
-  machine_type = var.machine_type
+  jumpbox_machine_type = var.jumpbox_machine_type
   region       = var.region
   zone         = var.zone
+  debian       = data.google_compute_image.debian.self_link
+}
 
+module "server" {
+  source = "./modules/server"
+  network_name = google_compute_network.tf_network.self_link
+  tf_sa        = data.google_service_account.tf_sa.email
+  server_name  = var.server_name
+  server_machine_type = var.server_machine_type
+  region       = var.region
+  zone         = var.zone
+  debian       = data.google_compute_image.debian.self_link
 }
