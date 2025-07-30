@@ -28,13 +28,13 @@ This repository automates the provisioning of Google Cloud infrastructure needed
 
 ```bash
 .
-├── main.tf                  # Core infrastructure setup
-├── variables.tf             # Input variables (VM specs, SSH keys, etc.)
-├── outputs.tf               # Useful outputs like IPs and instance names
+├── main.tf                 
+├── variables.tf             
+├── outputs.tf             
 ├── modules/
-│   └── gce/                 # Reusable VM creation module
+│   └── gce/               
 │       ├── main.tf
 │       ├── variables.tf
 │       └── outputs.tf
-├── terraform.tfvars         # (Optional) values for input variables
-└── README.md                # You're here!
+├── terraform.tfvars        
+└── README.md             

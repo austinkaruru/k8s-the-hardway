@@ -11,8 +11,8 @@ variable "zone" {
   default     = "europe-west4-a"
 }
 
-variable "debian" {
-  description = "The Debian image to use for the VM instances."
+variable "image_type" {
+  description = "The image type to use for the VM instances."
   type        = string
   
 }
@@ -21,6 +21,10 @@ variable "machine_type" {
   description = "The machine type for the instances."
 }
 
+variable "boot_disk" {
+  description = "The type of boot disk for the VM instances."
+  type        = string
+}
 
 variable "network_name" {
   description = "The name of the network to create."
@@ -35,4 +39,11 @@ variable "tf_sa" {
 variable "size" {
   description = "The size of the disk for the VM instances in GB."
   type        = number
+}
+
+variable "tags" {
+  description = "Network tags for the VM instances."
+  type        = list(string)
+  default     = ["k8s-thw"]
+  
 }

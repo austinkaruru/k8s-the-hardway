@@ -15,28 +15,21 @@ data "google_service_account" "tf_sa" {
   account_id = var.sa_account
 }
 
-data "google_compute_image" "debian" {
-  family  = "debian-11"
+data "google_compute_image" "image_type" {
+  family  = "debian-12"
   project = "debian-cloud"
 }
-resource "google_compute_network" "tf_network" {
-  name                    = var.network_name
-  auto_create_subnetworks = true
+
+module "net" {
+  source = "./modules/net"
+
+  network_name = var.vpc_name
+  firewall_protocols = var.firewall_protocols
+  firewall_ports = var.firewall_ports
+  firewall_target_tags = var.firewall_target_tags
+  firewall_source_ranges = var.firewall_source_ranges
 
 }
-
-resource "google_compute_firewall" "k8s_firewall" {
-  name    = "${var.network_name}-firewall"
-  network = google_compute_network.tf_network.id
-  allow {
-    protocol = "tcp"
-    ports    = ["22", "80", "443"]
-  }
-  target_tags   = ["k8s-thw"]
-  source_ranges = ["0.0.0.0/0"]
-}
-
-
 
 module "gce" {
   source = "./modules/gce"
@@ -45,9 +38,11 @@ module "gce" {
   node_name = each.value.name
   region = var.region
   zone = var.zone
-  debian = data.google_compute_image.debian.self_link
+  image_type = data.google_compute_image.image_type.self_link
   machine_type = each.value.machine_type
-  network_name = var.network_name
+  boot_disk = var.boot_disk
+  tags = var.gce_tags
+  network_name = module.net.vpc_network_name
   tf_sa = data.google_service_account.tf_sa.email
   size = each.value.disk_size_gb
 

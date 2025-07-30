@@ -5,8 +5,8 @@ resource "google_compute_address" "vm_ip" {
 
 resource "google_compute_disk" "vm_disk" {
   name  = "${var.node_name}-disk"
-  type  = "pd-standard"
-  image = var.debian
+  type  = var.boot_disk
+  image = var.image_type
   zone  = var.zone
   size = var.size
 }
@@ -15,7 +15,7 @@ resource "google_compute_instance" "vm" {
   name         = var.node_name
   machine_type = var.machine_type
   zone         = var.zone
-  tags         = ["k8s-thw"]
+  tags         = var.tags
   allow_stopping_for_update = true
 
   boot_disk {
