@@ -1,8 +1,38 @@
-project_id   = "your-project"
-region       = "europe-west4"
-zone         = "europe-west4-a"
-jumpbox_name = "jumpbox"
-machine_type = "e2-micro"
-image        = "debian-cloud/debian-12"
-network_name = "terraform-network"
-google_credentials = "/Path/to/service/account/key/json"
+project_id   = "your-project-id-here"
+vpc_name     = "name-of-your-vpc"
+ssh_key      = "~/.ssh/id_rsa.pub"  # Path to your SSH public key
+ssh_username = "your-username"
+sa_account   = "your-service-account-name"
+boot_disk    = "pd-balanced"
+gce_tags     = ["k8s-thw"]
+
+# VM Configuration
+vms = {
+  jumpbox = {
+    name         = "jumpbox"
+    machine_type = "e2-small"
+    disk_size_gb = 10
+  }
+  server = {
+    name         = "server"
+    machine_type = "e2-small"
+    disk_size_gb = 20
+  }
+  node-0 = {
+    name         = "node-0"
+    machine_type = "e2-small"
+    disk_size_gb = 20
+  }
+  node-1 = {
+    name         = "node-1"
+    machine_type = "e2-small"
+    disk_size_gb = 20
+  }
+}
+
+# Network Security
+google_credentials     = "credentials/service-account-file.json"
+firewall_ports        = ["22", "80", "443", "6443", "2379-2380", "10250", "30000-32767"]
+firewall_protocols    = "tcp"
+firewall_target_tags  = ["k8s-thw"]
+firewall_source_ranges = ["0.0.0.0/0"]
