@@ -14,7 +14,7 @@ variable "ssh_username" {
   type        = string
 }
 
-variable "gce_tags"{
+variable "gce_tags" {
   description = "Tags to apply to the GCE instances."
   type        = list(string)
 }
@@ -34,9 +34,9 @@ variable "zone" {
 variable "vms" {
   description = "VM configurations (name, machine type, disk size)"
   type = map(object({
-    name          = string
-    machine_type  = string
-    disk_size_gb  = number
+    name         = string
+    machine_type = string
+    disk_size_gb = number
   }))
 }
 
@@ -48,7 +48,7 @@ variable "firewall_protocols" {
 variable "firewall_ports" {
   description = "List of ports to allow in the firewall rules."
   type        = list(string)
-  
+
 }
 
 variable "firewall_target_tags" {

@@ -116,10 +116,12 @@ This repository automates the provisioning of Google Cloud infrastructure needed
 ### 1. Update terraform.tfvars
 ```hcl
 project_id   = "your-project-id-here"
-vpc_name     = "k8s-thw-network"
+vpc_name     = "name-of-your-vpc"
 ssh_key      = "~/.ssh/id_rsa.pub"  # Path to your SSH public key
 ssh_username = "your-username"
-sa_account   = "k8s-tf"
+sa_account   = "your-service-account-name"
+boot_disk    = "pd-balanced"
+gce_tags     = ["k8s-thw"]
 
 # VM Configuration
 vms = {
@@ -146,7 +148,7 @@ vms = {
 }
 
 # Network Security
-google_credentials     = "credentials/k8s-tf.json"
+google_credentials     = "credentials/service-account-file.json"
 firewall_ports        = ["22", "80", "443", "6443", "2379-2380", "10250", "30000-32767"]
 firewall_protocols    = "tcp"
 firewall_target_tags  = ["k8s-thw"]
