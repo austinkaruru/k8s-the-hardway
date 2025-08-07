@@ -5,12 +5,6 @@ provider "google" {
   credentials = var.google_credentials
 }
 
-resource "google_compute_project_metadata" "my_ssh_key" {
-  metadata = {
-    ssh-keys = "${var.ssh_username}:${file(var.ssh_key)}"
-  }
-}
-
 data "google_service_account" "tf_sa" {
   account_id = var.sa_account
 }
@@ -45,5 +39,7 @@ module "gce" {
   network_name = module.net.vpc_network_name
   tf_sa        = data.google_service_account.tf_sa.email
   size         = each.value.disk_size_gb
+  ssh_username = var.ssh_username
+  ssh_key      = var.ssh_key
 
 }

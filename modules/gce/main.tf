@@ -18,6 +18,10 @@ resource "google_compute_instance" "vm" {
   tags         = var.tags
   allow_stopping_for_update = true
 
+  metadata = {
+    ssh-keys = "${var.ssh_username}:${file(var.ssh_key)}"
+  }
+
   boot_disk {
     source      = google_compute_disk.vm_disk.id
     auto_delete = true

@@ -47,3 +47,13 @@ variable "tags" {
   default     = ["k8s-thw"]
   
 }
+
+variable ssh_key {
+  description = "Path to the SSH public key file."
+  type        = string
+}
+
+variable ssh_username {
+  description = "The username for SSH access to the VM instances."
+  type        = string
+}
