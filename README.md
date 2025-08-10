@@ -54,11 +54,11 @@ This repository automates the provisioning of Google Cloud infrastructure needed
 ├── outputs.tf             # Output values (IPs, instance names)
 ├── terraform.tfvars       # Variable values (sensitive data)
 ├── modules/
-│   ├── gce/               # Compute Engine module
+│   ├── gce-instance/               # Compute Engine module
 │   │   ├── main.tf        # VM, disk, and IP resources
 │   │   ├── variables.tf   # Module input variables
 │   │   └── outputs.tf     # Module outputs
-│   └── net/               # Network module
+│   └── gce-network/               # Network module
 │       ├── main.tf        # VPC and firewall resources
 │       ├── variables.tf   # Network variables
 │       └── outputs.tf     # Network outputs

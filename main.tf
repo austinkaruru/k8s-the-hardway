@@ -14,7 +14,7 @@ data "google_compute_image" "image_type" {
   project = "debian-cloud"
 }
 
-module "net" {
+module "gce-network" {
   source = "./modules/net"
 
   network_name           = var.vpc_name
@@ -27,7 +27,7 @@ module "net" {
 
 }
 
-module "gce" {
+module "gce-instance" {
   source   = "./modules/gce"
   for_each = var.vms
 
