@@ -13,3 +13,4 @@ output "node_0_subnet_name" {
 output "node_1_subnet_name" {
   value = google_compute_subnetwork.node_1_subnet.name
 }
+

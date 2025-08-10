@@ -61,3 +61,5 @@ resource "google_compute_firewall" "k8s_firewall" {
   target_tags   = var.firewall_target_tags
   source_ranges = var.firewall_source_ranges
 }
+
+

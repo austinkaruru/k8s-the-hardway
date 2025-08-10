@@ -31,20 +31,20 @@ module "gce" {
   source   = "./modules/gce"
   for_each = var.vms
 
-  node_name    = each.value.name
-  region       = var.region
-  zone         = var.zone
-  image_type   = data.google_compute_image.image_type.self_link
-  machine_type = each.value.machine_type
-  boot_disk    = var.boot_disk
-  tags         = var.gce_tags
-  network_name = module.net.vpc_network_name
+  node_name         = each.value.name
+  region            = var.region
+  zone              = var.zone
+  image_type        = data.google_compute_image.image_type.self_link
+  machine_type      = each.value.machine_type
+  boot_disk         = var.boot_disk
+  tags              = var.gce_tags
+  network_name      = module.net.vpc_network_name
   management_subnet = module.net.management_subnet_name
   node_0_subnet     = module.net.node_0_subnet_name
   node_1_subnet     = module.net.node_1_subnet_name
-  tf_sa        = data.google_service_account.tf_sa.email
-  size         = each.value.disk_size_gb
-  ssh_username = var.ssh_username
-  ssh_key      = var.ssh_key
+  tf_sa             = data.google_service_account.tf_sa.email
+  size              = each.value.disk_size_gb
+  ssh_username      = var.ssh_username
+  ssh_key           = var.ssh_key
 
 }
