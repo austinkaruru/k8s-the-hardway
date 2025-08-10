@@ -57,3 +57,18 @@ variable ssh_username {
   description = "The username for SSH access to the VM instances."
   type        = string
 }
+
+variable "management_subnet" {
+  description = "Management subnet for jumpbox and server"
+  type        = string
+}
+
+variable "node_0_subnet" {
+  description = "Subnet for node-0"
+  type        = string
+}
+
+variable "node_1_subnet" {
+  description = "Subnet for node-1"
+  type        = string
+}

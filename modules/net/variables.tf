@@ -22,3 +22,15 @@ variable "firewall_source_ranges" {
   description = "Source ranges for the firewall rules."
   type = list(string)
 }
+
+variable "region" {
+  description = "The Google Cloud region where resources will be created."
+  default     = "europe-west4"
+
+}
+
+variable "zone" {
+  description = "The Google Cloud zone where resources will be created."
+  default     = "europe-west4-a"  
+  
+}

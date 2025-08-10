@@ -63,6 +63,7 @@ This repository automates the provisioning of Google Cloud infrastructure needed
 │       ├── variables.tf   # Network variables
 │       └── outputs.tf     # Network outputs
 ├── credentials/           # Service account keys (gitignored)
+├── machines.txt           # Machine database for Kubernetes setup
 └── README.md
 ```
 
@@ -179,51 +180,76 @@ terraform plan
 terraform apply
 ```
 
-### 4. Connect to Instances
+### 4. Get Instance IPs
 ```bash
-# Get instance IPs
 terraform output vm_ips
+```
+
+---
+
+## 🔧 Post-Deployment Setup for Kubernetes The Hard Way
+
+After successful Terraform deployment, follow these steps to prepare for the Kubernetes setup:
+
+### 1. Create machines.txt File
+Create a `machines.txt` file with your instance IPs (get from `terraform output`):
+```bash
+# Format: IPV4_ADDRESS FQDN HOSTNAME POD_SUBNET
+34.90.50.182 server.kubernetes.local server
+34.13.164.225 node-0.kubernetes.local node-0 10.200.0.0/24
+34.32.227.137 node-1.kubernetes.local node-1 10.200.1.0/24
+```
+
+### 2. Setup SSH Access from Jumpbox
+
+Since Terraform configured your VMs with your local SSH key, you need to copy that key to the jumpbox to follow the tutorial:
+
+```bash
+# Copy your private SSH key to jumpbox (from your local machine)
+scp ~/.ssh/id_ed25519 root@JUMPBOX_IP:/root/.ssh/
+scp ~/.ssh/id_ed25519.pub root@JUMPBOX_IP:/root/.ssh/
 
 # SSH to jumpbox
-ssh -i ~/.ssh/id_rsa username@JUMPBOX_IP
+ssh root@JUMPBOX_IP
 
-# SSH to other instances via jumpbox (recommended)
-ssh -i ~/.ssh/id_rsa -J username@JUMPBOX_IP username@SERVER_IP
+# Set correct permissions on jumpbox
+chmod 600 /root/.ssh/id_ed25519
+chmod 644 /root/.ssh/id_ed25519.pub
+
+# Test SSH access to cluster machines
+ssh -i /root/.ssh/id_ed25519 root@SERVER_IP
+ssh -i /root/.ssh/id_ed25519 root@NODE_0_IP
+ssh -i /root/.ssh/id_ed25519 root@NODE_1_IP
+```
+
+### 3. Continue with Kubernetes The Hard Way Tutorial
+
+Now you can follow the standard tutorial steps from the jumpbox:
+
+```bash
+# Copy machines.txt to jumpbox
+scp machines.txt root@JUMPBOX_IP:~/
+
+# SSH to jumpbox and continue with the tutorial
+ssh root@JUMPBOX_IP
+
+# Verify SSH access to all machines
+while read IP FQDN HOST SUBNET; do
+  ssh -n -i /root/.ssh/id_ed25519 root@${IP} hostname
+done < machines.txt
 ```
 
 ---
 
-## 🔧 Post-Deployment
+## 🔒 SSH Configuration Details
 
-After successful deployment, you'll have:
-- ✅ 4 Ubuntu instances with static IPs
-- ✅ Properly configured networking and firewall rules
-- ✅ SSH access configured for all instances
-- ✅ Ready environment for Kubernetes The Hard Way installation
+The Terraform setup automatically:
+- Enables root SSH access on all instances
+- Configures SSH key authentication using your provided public key
+- Disables password authentication for security
+- Sets proper SSH daemon configuration
 
-### Next Steps
-1. Follow the [Kubernetes The Hard Way guide](https://github.com/kelseyhightower/kubernetes-the-hard-way) starting from **"Installing the Client Tools"**
-2. Use the jumpbox as your admin workstation
-3. The server instance will host your control plane
-4. node-0 and node-1 will be your worker nodes
-
----
-
-## 🔒 Security Considerations
-
-⚠️ **Important Security Notes:**
-- The default firewall allows access from `0.0.0.0/0` - restrict this to your IP range in production
-- SSH keys are added at the project level - consider instance-level keys for better isolation
-- All instances have external IPs - use internal-only IPs with a bastion host for production workloads
-
-### Recommended Security Improvements
-```hcl
-# Restrict firewall to your IP
-firewall_source_ranges = ["YOUR_IP/32"]
-
-# Use more specific port ranges
-firewall_ports = ["22"]  # Only SSH, add others as needed
-```
+**Important**: The jumpbox uses the same SSH key as configured in your terraform.tfvars, so you must copy your private key to the jumpbox to access other machines as described above.
 
 ---
 
@@ -242,19 +268,19 @@ terraform destroy
 
 ### Common Issues
 - **SSH Connection Refused**: Wait 2-3 minutes after deployment for instances to fully boot
-- **Permission Denied**: Ensure your service account has proper IAM roles
+- **Permission Denied on SSH**: Ensure you've copied your private key to jumpbox as described above
 - **Terraform State Lock**: Use `terraform force-unlock LOCK_ID` if needed
 
-### Useful Commands
+### SSH Troubleshooting
 ```bash
-# Check instance status
-gcloud compute instances list
+# Test SSH with verbose output
+ssh -v -i ~/.ssh/id_ed25519 root@instance-ip
 
-# View firewall rules
-gcloud compute firewall-rules list
+# Check SSH service status on target machine
+systemctl status sshd
 
-# SSH with verbose output
-ssh -v -i ~/.ssh/id_rsa username@instance-ip
+# View SSH configuration
+cat /etc/ssh/sshd_config | grep -E "(PermitRootLogin|PubkeyAuthentication|PasswordAuthentication)"
 ```
 
 ---
