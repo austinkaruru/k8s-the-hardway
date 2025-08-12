@@ -1,3 +1,13 @@
+variable "state_bucket" {
+  description = "The name of the Google Cloud Storage bucket for Terraform state."
+  type        = string
+}
+
+variable "state_prefix" {
+  description = "The prefix for the Terraform state files in the GCS bucket."
+  type        = string
+}
+
 variable "project_id" {
   description = "The Google Cloud project ID where resources will be created."
   type        = string
