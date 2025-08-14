@@ -1,0 +1,3 @@
+# MkDocs and Simple Blog Theme Requirements
+mkdocs>=1.4.0
+mkdocs-simple-blog>=0.1.0
