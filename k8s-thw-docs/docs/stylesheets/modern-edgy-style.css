@@ -1,0 +1,663 @@
+/* Modern, Edgy Material Theme Customizations */
+
+:root {
+  /* Modern color palette */
+  --md-primary-fg-color: #000000;
+  --md-primary-fg-color--light: #333333;
+  --md-primary-fg-color--dark: #000000;
+  --md-accent-fg-color: #00ffff;
+  --md-accent-fg-color--transparent: #00ffff1a;
+  
+  /* Modern gradients */
+  --gradient-primary: linear-gradient(135deg, #000000 0%, #333333 100%);
+  --gradient-accent: linear-gradient(135deg, #00ffff 0%, #0099cc 100%);
+  --gradient-hero: linear-gradient(135deg, #333333 0%, #00ffff 50%, #333333 100%);
+  --gradient-text: linear-gradient(135deg, #ffffff 0%, #00ffff 100%);
+  
+  /* Modern shadows */
+  --shadow-modern: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(0, 255, 255, 0.3);
+  --shadow-text: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Modern header with better visibility */
+.md-header {
+  background: var(--gradient-primary);
+  box-shadow: var(--shadow-modern);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* Site title next to logo - ensure high visibility */
+.md-header__title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  margin-left: 0.5rem;
+}
+
+/* Light mode header title */
+[data-md-color-scheme="default"] .md-header__title {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Dark mode header title */
+[data-md-color-scheme="slate"] .md-header__title {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* Add cyan glow effect on hover */
+.md-header__title:hover {
+  color: #00ffff !important;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 0.8);
+  transition: all 0.3s ease;
+}
+
+/* Ensure the title link is visible */
+.md-header__button.md-logo + .md-header__title,
+.md-header-nav__title {
+  color: #ffffff !important;
+}
+
+/* Override any Material theme defaults */
+.md-header .md-header__title .md-header__ellipsis {
+  color: #ffffff !important;
+}
+
+/* Kubernetes logo styling - remove black box and enhance breathing effect */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  width: 32px;
+  height: 32px;
+  /* Remove any background or box */
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  /* Enhanced base glow effect */
+  filter: 
+    drop-shadow(0 0 12px rgba(0, 255, 255, 0.8)) 
+    drop-shadow(0 0 24px rgba(0, 255, 255, 0.6))
+    brightness(1.3) 
+    contrast(1.2);
+  transition: all 0.3s ease;
+  /* Remove any padding or margin that might create a box */
+  padding: 0 !important;
+  margin: 0 !important;
+  /* Ensure transparency */
+  mix-blend-mode: screen;
+}
+
+.md-header__button.md-logo:hover img,
+.md-header__button.md-logo:hover svg {
+  filter: 
+    drop-shadow(0 0 20px rgba(0, 255, 255, 1)) 
+    drop-shadow(0 0 40px rgba(0, 255, 255, 0.8))
+    drop-shadow(0 0 60px rgba(0, 255, 255, 0.6))
+    brightness(1.6) 
+    contrast(1.3);
+  transform: scale(1.15);
+}
+
+/* Remove any background from the logo button itself */
+.md-header__button.md-logo {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 4px !important;
+  border-radius: 0 !important;
+}
+
+/* Enhanced breathing animation - more subtle and smooth */
+@keyframes breathe {
+  0%, 100% { 
+    filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4)) brightness(1.1);
+    transform: scale(1);
+  }
+  50% { 
+    filter: drop-shadow(0 0 16px rgba(0, 255, 255, 0.7)) brightness(1.3);
+    transform: scale(1.02);
+  }
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* If the logo has a dark background in the image itself, try to make it transparent */
+.md-header__button.md-logo img {
+  /* This might help if the image has a dark background */
+  filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.5)) brightness(1.2) contrast(1.1) saturate(1.2);
+  /* Try to blend out dark backgrounds */
+  mix-blend-mode: lighten;
+}
+
+/* Modern navigation with proper contrast */
+.md-nav {
+  font-weight: 500;
+}
+
+.md-nav__title {
+  font-weight: 700;
+  color: var(--md-accent-fg-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+/* Light mode navigation */
+[data-md-color-scheme="default"] .md-nav__link {
+  color: #333333;
+}
+
+[data-md-color-scheme="default"] .md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+}
+
+[data-md-color-scheme="default"] .md-nav__item--active > .md-nav__link {
+  color: var(--md-accent-fg-color);
+  font-weight: 600;
+}
+
+/* Dark mode navigation */
+[data-md-color-scheme="slate"] .md-nav__link {
+  color: #cccccc;
+}
+
+[data-md-color-scheme="slate"] .md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+}
+
+[data-md-color-scheme="slate"] .md-nav__item--active > .md-nav__link {
+  color: var(--md-accent-fg-color);
+  font-weight: 600;
+}
+
+.md-nav__item--active > .md-nav__link {
+  position: relative;
+}
+
+.md-nav__item--active > .md-nav__link::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--gradient-accent);
+  border-radius: 2px;
+  box-shadow: var(--shadow-glow);
+}
+
+/* Modern content area */
+.md-content__inner {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+/* Edgy typography with proper contrast */
+.md-typeset h1 {
+  font-weight: 900;
+  font-size: 3rem;
+  color: #333333; /* Dark gray for light mode */
+  text-align: center;
+  margin: 2rem 0;
+  text-shadow: var(--shadow-text);
+  position: relative;
+}
+
+/* Light mode h1 styling */
+[data-md-color-scheme="default"] .md-typeset h1 {
+  color: #333333;
+  background: linear-gradient(135deg, #333333 0%, #00ffff 50%, #333333 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dark mode h1 styling */
+[data-md-color-scheme="slate"] .md-typeset h1 {
+  color: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #00ffff 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Fallback for browsers that don't support background-clip */
+@supports not (-webkit-background-clip: text) {
+  .md-typeset h1 {
+    background: none;
+  }
+  
+  [data-md-color-scheme="default"] .md-typeset h1 {
+    color: #333333 !important;
+  }
+  
+  [data-md-color-scheme="slate"] .md-typeset h1 {
+    color: #ffffff !important;
+  }
+}
+
+.md-typeset h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: var(--gradient-accent);
+  border-radius: 2px;
+  box-shadow: var(--shadow-glow);
+}
+
+.md-typeset h2 {
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  border-image: var(--gradient-accent) 1;
+  padding-bottom: 0.5rem;
+  margin-top: 3rem;
+  position: relative;
+}
+
+/* Light mode h2 styling */
+[data-md-color-scheme="default"] .md-typeset h2 {
+  color: #333333;
+}
+
+/* Dark mode h2 styling */
+[data-md-color-scheme="slate"] .md-typeset h2 {
+  color: #ffffff;
+}
+
+.md-typeset h2::before {
+  content: '▶';
+  color: var(--md-accent-fg-color);
+  margin-right: 0.5rem;
+  font-size: 0.8em;
+}
+
+.md-typeset h3 {
+  font-weight: 600;
+  position: relative;
+}
+
+/* Light mode h3 styling */
+[data-md-color-scheme="default"] .md-typeset h3 {
+  color: #555555;
+}
+
+/* Dark mode h3 styling */
+[data-md-color-scheme="slate"] .md-typeset h3 {
+  color: #cccccc;
+}
+
+.md-typeset h3::before {
+  content: '●';
+  color: var(--md-accent-fg-color);
+  margin-right: 0.5rem;
+  font-size: 0.6em;
+}
+
+/* Modern code blocks */
+.md-typeset .highlight {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-modern);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  position: relative;
+}
+
+.md-typeset .highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-accent);
+}
+
+.md-typeset code {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.3em 0.6em;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Modern admonitions */
+.md-typeset .admonition {
+  border-radius: 12px;
+  border: none;
+  box-shadow: var(--shadow-modern);
+  overflow: hidden;
+  position: relative;
+}
+
+.md-typeset .admonition::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gradient-accent);
+}
+
+.md-typeset .admonition.tip {
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, rgba(0, 200, 0, 0.05) 100%);
+  border-left: 4px solid #00ff00;
+}
+
+.md-typeset .admonition.warning {
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
+  border-left: 4px solid #ffa500;
+}
+
+.md-typeset .admonition.note {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 200, 255, 0.05) 100%);
+  border-left: 4px solid var(--md-accent-fg-color);
+}
+
+/* Modern tables */
+.md-typeset table:not([class]) {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-modern);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--gradient-primary);
+  color: var(--md-accent-fg-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+.md-typeset table:not([class]) tr:hover {
+  background-color: rgba(0, 255, 255, 0.05);
+  transform: scale(1.01);
+  transition: all 0.2s ease;
+}
+
+/* Modern buttons */
+.md-typeset .md-button {
+  background: var(--gradient-accent);
+  color: #000000;
+  border: none;
+  border-radius: 25px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.8rem 2rem;
+  box-shadow: var(--shadow-glow);
+  transition: all 0.3s ease;
+}
+
+.md-typeset .md-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+/* Modern search */
+.md-search__form {
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.md-search__input {
+  background: transparent;
+  color: white;
+}
+
+.md-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Modern footer */
+.md-footer {
+  background: var(--gradient-primary);
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.md-footer__inner {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.md-footer__link {
+  color: var(--md-accent-fg-color);
+}
+
+/* Modern tabs */
+.md-typeset .tabbed-set {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-modern);
+}
+
+.md-typeset .tabbed-labels > label {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.md-typeset .tabbed-labels > label:hover {
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset .tabbed-set > input:checked + label {
+  background: var(--gradient-accent);
+  color: #000000;
+  box-shadow: var(--shadow-glow);
+}
+
+/* Modern blockquotes */
+.md-typeset blockquote {
+  border-left: 4px solid var(--md-accent-fg-color);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 200, 255, 0.05) 100%);
+  border-radius: 0 12px 12px 0;
+  box-shadow: var(--shadow-modern);
+  position: relative;
+}
+
+.md-typeset blockquote::before {
+  content: '"';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  font-size: 3rem;
+  color: var(--md-accent-fg-color);
+  opacity: 0.3;
+}
+
+/* Modern animations - enhanced bright breathing effect for logo */
+@keyframes breathe {
+  0%, 100% { 
+    filter: 
+      drop-shadow(0 0 12px rgba(0, 255, 255, 0.8)) 
+      drop-shadow(0 0 24px rgba(0, 255, 255, 0.6))
+      brightness(1.3);
+    transform: scale(1);
+  }
+  50% { 
+    filter: 
+      drop-shadow(0 0 20px rgba(0, 255, 255, 1)) 
+      drop-shadow(0 0 40px rgba(0, 255, 255, 0.8))
+      drop-shadow(0 0 60px rgba(0, 255, 255, 0.4))
+      brightness(1.5);
+    transform: scale(1.05);
+  }
+}
+
+/* Apply enhanced breathing animation to logo */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* Modern responsive design */
+@media screen and (max-width: 76.1875em) {
+  .md-content__inner {
+    max-width: none;
+    margin: 0;
+  }
+  
+  .md-typeset h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Dark mode enhancements with proper contrast */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0a0a0a;
+  --md-default-fg-color: #ffffff;
+  --md-typeset-color: #ffffff;
+}
+
+/* Ensure all text is visible in dark mode */
+[data-md-color-scheme="slate"] .md-typeset {
+  color: #ffffff;
+}
+
+[data-md-color-scheme="slate"] .md-typeset p {
+  color: #e0e0e0;
+}
+
+[data-md-color-scheme="slate"] .md-typeset li {
+  color: #e0e0e0;
+}
+
+/* Navigation text visibility */
+[data-md-color-scheme="slate"] .md-nav__title {
+  color: var(--md-accent-fg-color);
+}
+
+[data-md-color-scheme="slate"] .md-nav__link {
+  color: #cccccc;
+}
+
+[data-md-color-scheme="slate"] .md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+}
+
+/* Header text visibility in dark mode */
+[data-md-color-scheme="slate"] .md-header__title {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #ffffff 0%, #00ffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@supports not (-webkit-background-clip: text) {
+  [data-md-color-scheme="slate"] .md-header__title {
+    color: #00ffff !important;
+    background: none;
+  }
+}
+
+/* Modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradient-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #00ffff 0%, #ffffff 100%);
+}
+
+/* Force header title visibility - override all Material defaults */
+.md-header-nav__title,
+.md-header__title,
+.md-header__title .md-header__ellipsis,
+.md-header .md-header-nav__title,
+.md-header .md-header__title {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  font-weight: 800 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Specific targeting for the title text */
+.md-header .md-header-nav__title .md-header__ellipsis,
+.md-header .md-header__title .md-header__ellipsis {
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Hover effect for the title */
+.md-header-nav__title:hover,
+.md-header__title:hover {
+  color: #00ffff !important;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Additional logo cleanup - handle potential black backgrounds */
+.md-header__button.md-logo,
+.md-header__button.md-logo:hover,
+.md-header__button.md-logo:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Try different approaches to remove black box from logo image */
+.md-header__button.md-logo img {
+  /* Remove any image background */
+  background: transparent !important;
+  background-color: transparent !important;
+  
+  /* Try blend modes to eliminate dark backgrounds */
+  mix-blend-mode: screen; /* This should make black transparent */
+  
+  /* Enhanced bright filtering */
+  filter: 
+    drop-shadow(0 0 12px rgba(0, 255, 255, 0.8)) 
+    drop-shadow(0 0 24px rgba(0, 255, 255, 0.6))
+    brightness(1.4) 
+    contrast(1.3) 
+    saturate(1.2);
+}
+
+/* If screen blend mode doesn't work, try this brighter alternative */
+.md-header__button.md-logo img.alt-blend {
+  mix-blend-mode: multiply;
+  filter: 
+    drop-shadow(0 0 16px rgba(0, 255, 255, 1)) 
+    drop-shadow(0 0 32px rgba(0, 255, 255, 0.8))
+    brightness(2.2) 
+    contrast(1.8) 
+    invert(1);
+}
