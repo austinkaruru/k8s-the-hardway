@@ -1,0 +1,166 @@
+/* Blog-like customizations for Material theme */
+
+/* More personal, blog-like typography */
+.md-typeset {
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.md-typeset h1 {
+  font-weight: 700;
+  color: var(--md-primary-fg-color);
+  margin-bottom: 1.5rem;
+}
+
+.md-typeset h2 {
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--md-primary-fg-color--light);
+  padding-bottom: 0.5rem;
+}
+
+/* Blog-like content spacing */
+.md-typeset p {
+  margin-bottom: 1.2rem;
+}
+
+/* Personal touch for the main content area */
+.md-content__inner {
+  max-width: 45rem; /* Narrower for better reading */
+  margin: 0 auto;
+}
+
+/* Blog-like navigation styling */
+.md-nav__title {
+  font-weight: 600;
+  color: var(--md-primary-fg-color);
+}
+
+.md-nav__item--active > .md-nav__link {
+  color: var(--md-accent-fg-color);
+  font-weight: 600;
+}
+
+/* More personal admonition styling */
+.md-typeset .admonition.tip {
+  border-left: 4px solid #00c853;
+}
+
+.md-typeset .admonition.warning {
+  border-left: 4px solid #ff9800;
+}
+
+.md-typeset .admonition.note {
+  border-left: 4px solid #2196f3;
+}
+
+/* Blog-like code blocks */
+.md-typeset .highlight {
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Personal touch for the header */
+.md-header {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.md-header__title {
+  font-weight: 700;
+}
+
+/* Blog-like footer */
+.md-footer {
+  background-color: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+}
+
+/* More personal search styling */
+.md-search__form {
+  border-radius: 25px;
+}
+
+/* Blog-like table styling */
+.md-typeset table:not([class]) {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-primary-fg-color--light);
+  font-weight: 600;
+}
+
+/* Personal touch for blockquotes */
+.md-typeset blockquote {
+  border-left: 4px solid var(--md-accent-fg-color);
+  background-color: var(--md-code-bg-color);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Blog-like button styling */
+.md-typeset .md-button {
+  border-radius: 25px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* More personal emoji sizing */
+.md-typeset .twemoji {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+/* Blog-like date styling */
+.md-source-date {
+  font-style: italic;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.8rem;
+}
+
+/* Personal touch for the home page */
+.md-typeset .md-content__inner > h1:first-child {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(45deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Blog-like responsive adjustments */
+@media screen and (max-width: 76.1875em) {
+  .md-content__inner {
+    max-width: none;
+    margin: 0;
+  }
+}
+
+/* Personal touch for navigation sections */
+.md-nav--secondary .md-nav__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--md-accent-fg-color);
+}
+
+/* Blog-like hover effects */
+.md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+  transition: color 0.2s ease;
+}
+
+/* More personal code inline styling */
+.md-typeset code {
+  background-color: var(--md-code-bg-color);
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  font-size: 0.85em;
+}

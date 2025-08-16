@@ -20,6 +20,9 @@ k8s-the-hardway/
 ## 🚀 Quick Start
 
 1. **Setup Infrastructure** - Navigate to [`terraform/`](./terraform/) for detailed provisioning instructions
+   - Configure GCP project and service accounts
+   - Create GCS bucket for Terraform state storage
+   - Deploy infrastructure with Terraform
 2. **Follow Tutorial** - Complete [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way) using your provisioned infrastructure
 3. **Document Journey** - Use [`k8s-thw-docs/`](./k8s-thw-docs/) to blog about your learning experience
 

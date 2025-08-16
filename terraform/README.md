@@ -29,38 +29,115 @@ terraform/
 
 ### Google Cloud Setup
 
-1. **Create a GCP Project**
-   ```bash
-   gcloud projects create YOUR_PROJECT_ID
-   gcloud config set project YOUR_PROJECT_ID
-   ```
+#### Project Setup Options
 
-2. **Enable Required APIs**
-   ```bash
-   gcloud services enable compute.googleapis.com
-   gcloud services enable iam.googleapis.com
-   ```
+**Option 1: Create a New Project (Recommended for beginners)**
+```bash
+# Set your project ID (make it unique!)
+export PROJECT_ID="k8s-thw-$(whoami)-$(date +%Y%m%d)"
 
-3. **Create Service Account**
-   ```bash
-   gcloud iam service-accounts create k8s-tf \
-       --description="Terraform service account for Kubernetes The Hard Way" \
-       --display-name="K8s Terraform SA"
-   
-   gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-       --member="serviceAccount:k8s-tf@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
-       --role="roles/compute.admin"
-   
-   gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-       --member="serviceAccount:k8s-tf@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
-       --role="roles/iam.serviceAccountUser"
-   ```
+# Create the project
+gcloud projects create $PROJECT_ID --name="Kubernetes The Hard Way"
+gcloud config set project $PROJECT_ID
 
-4. **Download Service Account Key**
-   ```bash
-   gcloud iam service-accounts keys create credentials/k8s-tf.json \
-       --iam-account=k8s-tf@YOUR_PROJECT_ID.iam.gserviceaccount.com
-   ```
+# Enable billing in the GCP Console for this project
+echo "Enable billing for project: $PROJECT_ID"
+```
+
+**Option 2: Use an Existing Project**
+```bash
+# List your existing projects
+gcloud projects list
+
+# Set your existing project ID
+export PROJECT_ID="your-existing-project-id"
+gcloud config set project $PROJECT_ID
+
+# Verify you're using the right project
+gcloud config get-value project
+```
+
+> **Note:** If using an existing project, ensure it doesn't contain production resources and has sufficient quotas available.
+
+#### Enable Required APIs
+```bash
+gcloud services enable compute.googleapis.com
+gcloud services enable iam.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
+
+# Verify APIs are enabled
+gcloud services list --enabled --filter="name:(compute.googleapis.com OR iam.googleapis.com)"
+```
+
+#### Create Service Account
+```bash
+gcloud iam service-accounts create k8s-tf \
+    --description="Terraform service account for Kubernetes The Hard Way" \
+    --display-name="K8s Terraform SA"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:k8s-tf@$PROJECT_ID.iam.gserviceaccount.com" \
+    --role="roles/compute.admin"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:k8s-tf@$PROJECT_ID.iam.gserviceaccount.com" \
+    --role="roles/iam.serviceAccountUser"
+```
+
+#### Download Service Account Key
+```bash
+gcloud iam service-accounts keys create credentials/k8s-tf.json \
+    --iam-account=k8s-tf@$PROJECT_ID.iam.gserviceaccount.com
+```
+
+#### Create GCS Bucket for Terraform State
+
+Before running Terraform, you need to create a GCS bucket to store the Terraform state:
+
+```bash
+# Create a bucket for Terraform state (make the name globally unique)
+export TF_STATE_BUCKET="kthw-tf-state-$(whoami)-$(date +%Y%m%d)"
+
+# Create the bucket
+gsutil mb gs://$TF_STATE_BUCKET
+
+# Enable versioning for state file backup
+gsutil versioning set on gs://$TF_STATE_BUCKET
+
+# Verify bucket creation
+gsutil ls gs://$TF_STATE_BUCKET
+```
+
+#### Update Backend Configuration
+
+Update the backend configuration in `providers.tf` with your bucket name:
+
+```hcl
+terraform {
+    required_providers {
+        google = {
+            source  = "hashicorp/google"
+            version = "6.47.0"
+        }
+    }
+    backend "gcs" {
+        bucket  = "your-bucket-name-here"  # Replace with your bucket name
+        prefix  = "terraform/state"
+    }
+}
+```
+
+#### Verify Setup
+```bash
+# Check current project
+gcloud config get-value project
+
+# Verify service account exists
+gcloud iam service-accounts list --filter="email:k8s-tf@*"
+
+# Check key file was created
+ls -la credentials/k8s-tf.json
+```
 
 ### SSH Key Setup
 
@@ -82,7 +159,8 @@ vim terraform.tfvars
 
 ### 2. Update terraform.tfvars
 ```hcl
-project_id   = "your-project-id-here"
+# Use the PROJECT_ID from your setup above
+project_id   = "your-project-id-here"  # Replace with: echo $PROJECT_ID
 vpc_name     = "k8s-thw-vpc"
 ssh_key      = "~/.ssh/k8s-thw.pub"  # Path to your SSH public key
 ssh_username = "your-username"

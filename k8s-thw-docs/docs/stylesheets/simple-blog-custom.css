@@ -1,0 +1,194 @@
+/* Custom styling for simple-blog theme */
+
+/* Better typography for technical content */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.7;
+  color: #333;
+}
+
+/* Enhanced code blocks */
+pre {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+code {
+  background-color: #f1f3f4;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+/* Better headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #673ab7;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(45deg, #673ab7, #9c27b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  border-bottom: 2px solid #673ab7;
+  padding-bottom: 0.5rem;
+}
+
+/* Enhanced tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+th {
+  background-color: #673ab7;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Better admonitions */
+.admonition {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.admonition.tip {
+  background-color: #e8f5e8;
+  border-left-color: #4caf50;
+}
+
+.admonition.warning {
+  background-color: #fff3e0;
+  border-left-color: #ff9800;
+}
+
+.admonition.note {
+  background-color: #e3f2fd;
+  border-left-color: #2196f3;
+}
+
+.admonition-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Enhanced navigation */
+.nav {
+  background-color: #673ab7;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.nav a:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+/* Better blockquotes */
+blockquote {
+  border-left: 4px solid #9c27b0;
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+/* Enhanced buttons and links */
+a {
+  color: #673ab7;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #9c27b0;
+  text-decoration: underline;
+}
+
+/* Better spacing */
+p {
+  margin-bottom: 1.2rem;
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Enhanced lists */
+ul, ol {
+  margin-bottom: 1.2rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Better footer */
+footer {
+  background-color: #673ab7;
+  color: white;
+  text-align: center;
+  padding: 2rem 0;
+  margin-top: 3rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  pre {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  table {
+    font-size: 0.9rem;
+  }
+  
+  th, td {
+    padding: 8px;
+  }
+}

@@ -1,3 +1,10 @@
-# MkDocs and Simple Blog Theme Requirements
-mkdocs>=1.4.0
-mkdocs-simple-blog>=0.1.0
+# MkDocs and Material Theme Requirements
+mkdocs>=1.5.0
+mkdocs-material>=9.0.0
+pymdown-extensions>=10.0.0
+
+# Blog-focused plugins
+mkdocs-git-revision-date-localized-plugin>=1.2.0
+
+# Additional dependencies for enhanced features
+pillow>=9.0.0
