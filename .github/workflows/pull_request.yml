@@ -22,7 +22,7 @@ jobs:
           gh pr create \
             --base gcp \
             --head k8s-tf \
-            --title "Update gcp branch" \
+            --title "Update the gcp branch" \
             --body "This PR updates the gcp branch with the latest changes from the k8s-tf branch."
 
 
