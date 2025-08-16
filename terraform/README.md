@@ -57,7 +57,7 @@ gcloud config set project $PROJECT_ID
 gcloud config get-value project
 ```
 
-> **Note:** If using an existing project, ensure it doesn't contain production resources and has sufficient quotas available.
+> **Note:** If using an existing project, ensure it doesn't contain any production resources and has sufficient quotas available.
 
 #### Enable Required APIs
 ```bash
