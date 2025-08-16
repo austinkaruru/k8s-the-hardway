@@ -20,7 +20,56 @@ terraform/
 └── .terraform/               # Terraform working directory
 ```
 
-## 🚀 Quick Start
+## 🚀 Prerequisites
+
+### Required Tools
+- [Terraform](https://www.terraform.io/downloads.html) >= 1.0
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+- SSH key pair for instance access
+
+### Google Cloud Setup
+
+1. **Create a GCP Project**
+   ```bash
+   gcloud projects create YOUR_PROJECT_ID
+   gcloud config set project YOUR_PROJECT_ID
+   ```
+
+2. **Enable Required APIs**
+   ```bash
+   gcloud services enable compute.googleapis.com
+   gcloud services enable iam.googleapis.com
+   ```
+
+3. **Create Service Account**
+   ```bash
+   gcloud iam service-accounts create k8s-tf \
+       --description="Terraform service account for Kubernetes The Hard Way" \
+       --display-name="K8s Terraform SA"
+   
+   gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+       --member="serviceAccount:k8s-tf@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+       --role="roles/compute.admin"
+   
+   gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+       --member="serviceAccount:k8s-tf@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+       --role="roles/iam.serviceAccountUser"
+   ```
+
+4. **Download Service Account Key**
+   ```bash
+   gcloud iam service-accounts keys create credentials/k8s-tf.json \
+       --iam-account=k8s-tf@YOUR_PROJECT_ID.iam.gserviceaccount.com
+   ```
+
+### SSH Key Setup
+
+Generate SSH key pair if you don't have one:
+```bash
+ssh-keygen -t ed25519 -C "your-email@example.com" -f ~/.ssh/k8s-thw
+```
+
+## ⚙️ Configuration
 
 ### 1. Configure Variables
 ```bash
@@ -31,25 +80,120 @@ cp terraform.tfvars.example terraform.tfvars
 vim terraform.tfvars
 ```
 
-### 2. Initialize and Deploy
+### 2. Update terraform.tfvars
+```hcl
+project_id   = "your-project-id-here"
+vpc_name     = "k8s-thw-vpc"
+ssh_key      = "~/.ssh/k8s-thw.pub"  # Path to your SSH public key
+ssh_username = "your-username"
+sa_account   = "k8s-tf"
+boot_disk    = "pd-balanced"
+gce_tags     = ["k8s-thw"]
+
+# VM Configuration
+vms = {
+  jumpbox = {
+    name         = "jumpbox"
+    machine_type = "e2-small"
+    disk_size_gb = 10
+  }
+  server = {
+    name         = "server"
+    machine_type = "e2-small"
+    disk_size_gb = 20
+  }
+  node-0 = {
+    name         = "node-0"
+    machine_type = "e2-small"
+    disk_size_gb = 20
+  }
+  node-1 = {
+    name         = "node-1"
+    machine_type = "e2-small"
+    disk_size_gb = 20
+  }
+}
+
+# Network Security
+google_credentials     = "credentials/k8s-tf.json"
+firewall_ports        = ["22", "80", "443", "6443", "2379-2380", "10250", "30000-32767"]
+firewall_protocols    = "tcp"
+firewall_target_tags  = ["k8s-thw"]
+firewall_source_ranges = ["0.0.0.0/0"]  # ⚠️ Restrict this in production!
+```
+
+> 🔐 **Security Note**: The default `firewall_source_ranges = ["0.0.0.0/0"]` allows access from anywhere. For production use, restrict to your IP: `["YOUR_IP/32"]`
+
+## 🏗️ Deployment
+
+### 1. Initialize Terraform
 ```bash
-# Initialize Terraform
 terraform init
+```
 
-# Review planned changes
+### 2. Plan Infrastructure
+```bash
 terraform plan
+```
 
-# Deploy infrastructure
+### 3. Deploy Resources
+```bash
 terraform apply
 ```
 
-### 3. Get Instance Information
+### 4. Get Instance Information
 ```bash
 # View all outputs
 terraform output
 
 # Get specific instance IPs
 terraform output vm_ips
+```
+
+## 🔧 Post-Deployment Setup
+
+After successful deployment, prepare for the Kubernetes tutorial:
+
+### 1. Create machines.txt File
+Create a `machines.txt` file with your instance IPs (get from `terraform output`):
+```bash
+# Format: IPV4_ADDRESS FQDN HOSTNAME POD_SUBNET
+34.90.50.182 server.kubernetes.local server
+34.13.164.225 node-0.kubernetes.local node-0 10.200.0.0/24
+34.32.227.137 node-1.kubernetes.local node-1 10.200.1.0/24
+```
+
+### 2. Setup SSH Access from Jumpbox
+```bash
+# Copy your private SSH key to jumpbox (from your local machine)
+scp ~/.ssh/k8s-thw root@JUMPBOX_IP:/root/.ssh/
+scp ~/.ssh/k8s-thw.pub root@JUMPBOX_IP:/root/.ssh/
+
+# SSH to jumpbox
+ssh root@JUMPBOX_IP
+
+# Set correct permissions on jumpbox
+chmod 600 /root/.ssh/k8s-thw
+chmod 644 /root/.ssh/k8s-thw.pub
+
+# Test SSH access to cluster machines
+ssh -i /root/.ssh/k8s-thw root@SERVER_IP
+ssh -i /root/.ssh/k8s-thw root@NODE_0_IP
+ssh -i /root/.ssh/k8s-thw root@NODE_1_IP
+```
+
+### 3. Verify Setup
+```bash
+# Copy machines.txt to jumpbox
+scp machines.txt root@JUMPBOX_IP:~/
+
+# SSH to jumpbox and verify access to all machines
+ssh root@JUMPBOX_IP
+
+# Test connectivity to all machines
+while read IP FQDN HOST SUBNET; do
+  ssh -n -i /root/.ssh/k8s-thw root@${IP} hostname
+done < machines.txt
 ```
 
 ## 📋 Key Files
@@ -72,12 +216,34 @@ terraform output vm_ips
 - Configures firewall rules for Kubernetes components
 - Sets up network tags and security policies
 
+## 🐛 Troubleshooting
+
+### Common Issues
+- **SSH Connection Refused**: Wait 2-3 minutes after deployment for instances to fully boot
+- **Permission Denied on SSH**: Ensure you've copied your private key to jumpbox as described above
+- **Terraform State Lock**: Use `terraform force-unlock LOCK_ID` if needed
+- **API Not Enabled**: Ensure all required APIs are enabled in your GCP project
+
+### SSH Troubleshooting
+```bash
+# Test SSH with verbose output
+ssh -v -i ~/.ssh/k8s-thw root@instance-ip
+
+# Check SSH service status on target machine
+systemctl status sshd
+
+# View SSH configuration
+cat /etc/ssh/sshd_config | grep -E "(PermitRootLogin|PubkeyAuthentication|PasswordAuthentication)"
+```
+
 ## 🧹 Cleanup
 
 To destroy all provisioned resources:
 ```bash
 terraform destroy
 ```
+
+> 💰 **Cost Note**: Remember to destroy resources when not in use to avoid unnecessary GCP charges.
 
 ## 📚 Related Documentation
 
