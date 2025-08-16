@@ -14,12 +14,12 @@ This repository automates the provisioning of Google Cloud infrastructure needed
 
 ## ☁️ Google Compute Engine Specifications
 
-| Name    | Description          | vCPU | RAM    | Disk  | Machine Type | Purpose |
-|---------|----------------------|------|--------|-------|--------------|---------|
-| jumpbox | Admin access gateway | 1    | 1GB    | 10GB  | `e2-small`   | SSH bastion and kubectl access |
-| server  | Control Plane Node   | 2    | 2GB    | 20GB  | `e2-small`   | etcd, kube-apiserver, kube-controller-manager, kube-scheduler |
-| node-0  | Worker Node 1        | 2    | 2GB    | 20GB  | `e2-small`   | kubelet, kube-proxy, containerd |
-| node-1  | Worker Node 2        | 2    | 2GB    | 20GB  | `e2-small`   | kubelet, kube-proxy, containerd |
+| Name    | Description          | vCPU | RAM | Disk | Machine Type | Purpose                                                        |
+|---------|----------------------|------|-----|------|--------------|----------------------------------------------------------------|
+| jumpbox | Admin access gateway | 1    | 1GB | 10GB | `e2-small`   | SSH bastion and kubectl access                                |
+| server  | Control Plane Node   | 2    | 2GB | 20GB | `e2-small`   | etcd, kube-apiserver, kube-controller-manager, kube-scheduler |
+| node-0  | Worker Node 1        | 2    | 2GB | 20GB | `e2-small`   | kubelet, kube-proxy, containerd                               |
+| node-1  | Worker Node 2        | 2    | 2GB | 20GB | `e2-small`   | kubelet, kube-proxy, containerd                               |
 
 > 💡 **Note:** Machine types updated to `e2-small` for better performance during Kubernetes installation and to handle compilation tasks required in the challenge.
 
