@@ -1,6 +1,126 @@
-site_name: K8s The Hard Way
+site_name: K8s The Hard Way - My Learning Journey
+site_description: A personal journey through Kubernetes internals with Infrastructure as Code
+site_author: Austin
+site_url: https://your-username.github.io/k8s-the-hardway/
+
 nav:
- - Home: index.md
- - About: about.md
+  - Home: index.md
+  - Getting Started:
+    - Prerequisites: setup/prerequisites.md
+    - GCP Setup: setup/gcp-setup.md
+    - SSH Configuration: setup/ssh-setup.md
+  - Infrastructure Journey:
+    - Why Terraform?: infrastructure/terraform-overview.md
+    - Deployment Day: infrastructure/terraform-deployment.md
+    - Testing Everything: infrastructure/validation.md
+  - The Hard Way Begins:
+    - Starting the Journey: kubernetes/manual-setup.md
+    - Certificate Authority: kubernetes/certificates.md
+    - Control Plane Setup: kubernetes/control-plane.md
+    - Worker Nodes: kubernetes/worker-nodes.md
+    - Victory Lap: kubernetes/cluster-validation.md
+  - Lessons & Reflections:
+    - What I Learned: lessons/what-i-learned.md
+    - When Things Broke: lessons/troubleshooting.md
+    - Tips for Others: lessons/tips-and-tricks.md
+  - About This Journey: about.md
+
 theme:
-  name: simple-blog
+  name: material
+  palette:
+    # Warmer, more personal color scheme
+    - scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  
+  font:
+    text: Inter
+    code: JetBrains Mono
+  
+  features:
+    # More blog-like navigation
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    # Remove tabs for more blog-like feel
+    # - navigation.tabs
+  
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+
+# Blog-like extras
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-username
+      name: GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/your-profile
+      name: LinkedIn
+  
+  # Personal touch
+  generator: false  # Remove "Made with Material for MkDocs"
+
+# Basic plugins that work reliably
+plugins:
+  - search:
+      lang: en
+
+markdown_extensions:
+  # Essential for code and technical content
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  
+  # Blog-friendly formatting
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - footnotes
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  
+  # Personal touch extensions (simplified)
+  - pymdownx.emoji
+  
+  # Better typography for blog content
+  - pymdownx.smartsymbols
+  - smarty
+
+# Custom CSS for more blog-like styling
+extra_css:
+  - stylesheets/blog-style.css
+
+# Blog-like copyright
+copyright: |
+  &copy; 2024 Austin - This is my personal learning journey. 
+  <a href="#__consent">Change cookie settings</a>
