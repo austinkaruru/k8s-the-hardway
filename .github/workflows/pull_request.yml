@@ -9,10 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Create Pull Request
-        uses: actions/pull-request@v2
+        uses: actions/pull-request@v4
         with:
           title: 'Update gcp branch with changes from k8s-tf'
           body: 'This pull request updates the gcp branch with the latest changes from k8s-tf.'
-          
