@@ -1,7 +1,7 @@
 site_name: K8s The Hard Way - My Learning Journey
 site_description: A personal journey through Kubernetes internals with Infrastructure as Code
 site_author: Austin
-site_url: https://your-username.github.io/k8s-the-hardway/
+site_url: https://github.com/austinkaruru/k8s-the-hardway
 
 nav:
   - Home: index.md
@@ -27,59 +27,90 @@ nav:
 
 theme:
   name: material
+  
+  # Modern, edgy color scheme
   palette:
-    # Warmer, more personal color scheme
     - scheme: default
-      primary: deep purple
-      accent: purple
+      primary: black
+      accent: cyan
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
-      primary: deep purple
-      accent: purple
+      primary: black
+      accent: cyan
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   
+  # Modern typography
   font:
     text: Inter
     code: JetBrains Mono
   
+  # Kubernetes logo and favicon
+  logo: img/favicon.ico
+  favicon: img/favicon.ico
+  
   features:
-    # More blog-like navigation
+    # Modern navigation features
     - navigation.sections
     - navigation.expand
     - navigation.top
+    - navigation.tracking
+    - navigation.instant
+    - navigation.instant.prefetch
     - search.highlight
     - search.share
+    - search.suggest
     - content.code.copy
     - content.code.annotate
-    # Remove tabs for more blog-like feel
-    # - navigation.tabs
+    - content.code.select
+    - content.tooltips
+    - content.tabs.link
   
   icon:
     repo: fontawesome/brands/github
     edit: material/pencil
     view: material/eye
+    logo: material/kubernetes
 
-# Blog-like extras
+# Modern extras
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/your-username
+      link: https://github.com/austinkaruru
       name: GitHub
     - icon: fontawesome/brands/linkedin
-      link: https://linkedin.com/in/your-profile
+      link: https://linkedin.com/in/austin-karuru/
       name: LinkedIn
   
   # Personal touch
   generator: false  # Remove "Made with Material for MkDocs"
+  
+  # Modern analytics (optional)
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            Thanks for your feedback! Help us improve this page by
+            <a href="https://github.com/your-username/k8s-the-hardway/issues/new/?title=[Feedback]+{title}+-+{url}" target="_blank" rel="noopener">telling us what you found lacking</a>.
 
 # Basic plugins that work reliably
 plugins:
   - search:
       lang: en
+  - minify:
+      minify_html: true
 
 markdown_extensions:
   # Essential for code and technical content
@@ -95,7 +126,7 @@ markdown_extensions:
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
   
-  # Blog-friendly formatting
+  # Modern formatting
   - admonition
   - pymdownx.details
   - pymdownx.tabbed:
@@ -109,18 +140,18 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.tilde
   
-  # Personal touch extensions (simplified)
+  # Personal touch extensions
   - pymdownx.emoji
   
-  # Better typography for blog content
+  # Better typography
   - pymdownx.smartsymbols
   - smarty
 
-# Custom CSS for more blog-like styling
+# Modern, edgy custom CSS
 extra_css:
-  - stylesheets/blog-style.css
+  - stylesheets/modern-edgy-style.css
 
-# Blog-like copyright
+# Modern copyright
 copyright: |
-  &copy; 2024 Austin - This is my personal learning journey. 
-  <a href="#__consent">Change cookie settings</a>
+  &copy; 2025 <strong>Austin Karuru</strong> - Kubernetes The Hard Way Journey 
+  <br><small>Built with ❤️ and lots of ☕</small>
