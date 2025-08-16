@@ -4,12 +4,7 @@ on:
   push:
     branches:
       - k8s-tf
-# jobs:
-#   discover_repo:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check repository
-#         run: echo "Repo is ${{ github.repository  }}"
+
 jobs:
   create_pull_request:
     runs-on: ubuntu-latest
@@ -17,8 +12,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Create Pull Request
-        uses: actions/pull-request@v4
-        with:
-          title: 'Update gcp branch with changes from k8s-tf'
-          body: 'This pull request updates the gcp branch with the latest changes from k8s-tf.'
+      - name: Create pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base gcp \
+            --head k8s-tf \
+            --title "Update gcp branch" \
+            --body "This PR updates the gcp branch with the latest changes from the k8s-tf branch."
+
+
+
+
+
