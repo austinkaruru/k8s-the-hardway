@@ -15,7 +15,7 @@ nav:
     - Testing Everything: infrastructure/validation.md
   - The Hard Way Begins:
     - Starting the Journey: kubernetes/manual-setup.md
-    - Certificate Authority: kubernetes/certificates.md
+    - Setting Up Jumpbox: kubernetes/jumpbox.md
     - Control Plane Setup: kubernetes/control-plane.md
     - Worker Nodes: kubernetes/worker-nodes.md
     - Victory Lap: kubernetes/cluster-validation.md

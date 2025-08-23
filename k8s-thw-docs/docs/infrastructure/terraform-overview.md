@@ -6,6 +6,7 @@ Now we get to the fun part - using Terraform to automate all the infrastructure 
 
 ### The Manual Alternative
 Without Terraform, setting up the infrastructure would involve:
+
 - Clicking through the GCP console to create a VPC
 - Manually configuring firewall rules (and probably forgetting some)
 - Creating 4 VM instances one by one
@@ -15,6 +16,7 @@ Without Terraform, setting up the infrastructure would involve:
 
 ### The Terraform Way
 With Infrastructure as Code:
+
 - Everything is defined in version-controlled files
 - Reproducible deployments every time
 - Easy to tear down and rebuild if something goes wrong
@@ -51,6 +53,7 @@ terraform/
 
 ### GCE Instance Module
 This module handles everything related to creating VM instances:
+
 - Compute Engine instances with proper sizing
 - Static IP address allocation
 - SSH key injection
@@ -61,6 +64,7 @@ This module handles everything related to creating VM instances:
 
 ### GCE Network Module
 This module sets up all the networking:
+
 - Custom VPC network
 - Firewall rules for all Kubernetes components
 - Network tags for security targeting
@@ -80,6 +84,7 @@ backend "gcs" {
 ```
 
 **Benefits:**
+
 - **Collaboration**: Multiple team members can work on the same infrastructure
 - **State Locking**: Prevents concurrent modifications that could corrupt state
 - **Backup & Versioning**: GCS versioning protects against state file loss
@@ -87,6 +92,7 @@ backend "gcs" {
 
 ### State File Contents
 The state file contains:
+
 - Current resource configurations
 - Resource dependencies
 - Metadata about your infrastructure
@@ -121,6 +127,7 @@ We need specific ports open for Kubernetes to work:
 
 ### Compute Instances
 Each instance gets:
+
 - **Static external IP** for consistent access
 - **e2-small machine type** (2 vCPU, 2GB RAM)
 - **Ubuntu 20.04 LTS** as the base OS
@@ -136,7 +143,7 @@ Instead of hardcoding values, everything is configurable:
 # Your project-specific values
 project_id   = "k8s-thw-yourname-20240816"
 vpc_name     = "k8s-thw-vpc"
-ssh_key      = "~/.ssh/k8s-thw.pub"
+ssh_key      = "~/.ssh/id_ed25519.pub"
 ssh_username = "yourname"
 
 # VM definitions
@@ -157,6 +164,7 @@ vms = {
 
 ### Security Considerations
 The default configuration allows access from anywhere (`0.0.0.0/0`) for simplicity. In production, you'd want to:
+
 - Restrict source IP ranges to your location
 - Use more granular firewall rules
 - Implement proper bastion host patterns

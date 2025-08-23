@@ -63,8 +63,6 @@ gcloud config get-value project
 # Verify billing is enabled (required for creating resources)
 gcloud beta billing projects describe $PROJECT_ID
 
-# Check available quotas
-gcloud compute project-info describe --project=$PROJECT_ID
 ```
 
 !!! warning "Billing Required"
@@ -111,6 +109,8 @@ mkdir -p ~/k8s-the-hardway/terraform/credentials
 gcloud iam service-accounts keys create ~/k8s-the-hardway/terraform/credentials/k8s-tf.json \
     --iam-account=k8s-tf@$PROJECT_ID.iam.gserviceaccount.com
 ```
+
+![My Service Account](../img/doc-images/k8s-tf-sa.png)
 
 !!! tip "Service Account Security"
     The service account key file contains sensitive credentials. Never commit it to version control!
@@ -173,8 +173,12 @@ Let's break down what we just gave our service account:
 - Allows Terraform to act as service accounts
 - Required for some GCE operations
 
+![Service Account Permissions](../img/doc-images/sa-roles.png)
+
+
 !!! note "Principle of Least Privilege"
     In production, you'd want more granular permissions. For learning purposes, these broad roles make things simpler.
+
 
 ## Project Cleanup Considerations
 
@@ -216,6 +220,7 @@ gsutil ls gs://$TF_STATE_BUCKET
 # Make note of your bucket name for Terraform configuration
 echo "Your Terraform state bucket: $TF_STATE_BUCKET"
 ```
+![Terraform Remote State Bucket](../img/doc-images/tf-bucket.png)
 
 !!! tip "Why Use Remote State?"
     - **Collaboration**: Multiple people can work on the same infrastructure

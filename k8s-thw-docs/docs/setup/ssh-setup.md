@@ -12,11 +12,11 @@ If you haven't already created SSH keys for this project:
 
 ```bash
 # Generate a new SSH key pair specifically for this project
-ssh-keygen -t ed25519 -C "k8s-thw-lab" -f ~/.ssh/k8s-thw
+ssh-keygen -t ed25519
 
 # Set proper permissions
-chmod 600 ~/.ssh/k8s-thw
-chmod 644 ~/.ssh/k8s-thw.pub
+chmod 600 ~/.ssh/id_ed25519
+chmod 644 ~/.ssh/id_ed25519.pub
 ```
 
 !!! tip "Why ed25519?"
@@ -26,104 +26,10 @@ chmod 644 ~/.ssh/k8s-thw.pub
 
 ```bash
 # Check that both keys exist
-ls -la ~/.ssh/k8s-thw*
+ls -la ~/.ssh/id_ed25519*
 
 # View your public key (you'll need this for Terraform)
-cat ~/.ssh/k8s-thw.pub
-```
-
-## SSH Configuration File
-
-Let's create an SSH config to make connecting to our instances easier:
-
-```bash
-# Create or edit your SSH config
-cat >> ~/.ssh/config << 'EOF'
-
-# Kubernetes The Hard Way Lab
-Host k8s-jumpbox
-    HostName JUMPBOX_IP_PLACEHOLDER
-    User root
-    IdentityFile ~/.ssh/k8s-thw
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-
-Host k8s-server
-    HostName SERVER_IP_PLACEHOLDER
-    User root
-    IdentityFile ~/.ssh/k8s-thw
-    ProxyJump k8s-jumpbox
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-
-Host k8s-node-0
-    HostName NODE_0_IP_PLACEHOLDER
-    User root
-    IdentityFile ~/.ssh/k8s-thw
-    ProxyJump k8s-jumpbox
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-
-Host k8s-node-1
-    HostName NODE_1_IP_PLACEHOLDER
-    User root
-    IdentityFile ~/.ssh/k8s-thw
-    ProxyJump k8s-jumpbox
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-
-EOF
-```
-
-!!! note "IP Placeholders"
-    We'll update the IP addresses after Terraform creates our infrastructure. For now, the placeholders keep the structure ready.
-
-## Understanding the SSH Setup
-
-### Why a Jumpbox?
-- **Security**: Only one machine exposed to the internet
-- **Organization**: Central point for accessing the cluster
-- **Convenience**: All tools and files in one place
-
-### SSH Configuration Explained
-
-| Setting | Purpose |
-|---------|---------|
-| `ProxyJump` | Routes connections through the jumpbox |
-| `StrictHostKeyChecking no` | Skips host key verification (lab only!) |
-| `UserKnownHostsFile /dev/null` | Doesn't save host keys |
-| `IdentityFile` | Uses our dedicated SSH key |
-
-!!! warning "Lab-Only Settings"
-    The `StrictHostKeyChecking no` setting is convenient for labs but should never be used in production!
-
-## SSH Agent Setup
-
-Let's add our key to the SSH agent for convenience:
-
-```bash
-# Start SSH agent if not running
-eval "$(ssh-agent -s)"
-
-# Add our key to the agent
-ssh-add ~/.ssh/k8s-thw
-
-# Verify it's loaded
-ssh-add -l
-```
-
-## Testing SSH (After Infrastructure Deployment)
-
-Once Terraform creates our infrastructure, we'll test SSH connectivity:
-
-```bash
-# Test direct connection to jumpbox
-ssh k8s-jumpbox
-
-# Test proxied connections to cluster nodes
-ssh k8s-server 'hostname'
-ssh k8s-node-0 'hostname'
-ssh k8s-node-1 'hostname'
+cat ~/.ssh/id_ed25519.pub
 ```
 
 ## SSH Key Distribution Strategy
@@ -142,14 +48,12 @@ Here's how SSH access will work in our setup:
 ## Preparing for the Tutorial
 
 The original Kubernetes The Hard Way tutorial expects:
+
 - Root access to all machines
 - SSH keys distributed for passwordless access
 - A jumpbox with all necessary tools
 
-Our Terraform setup handles most of this automatically, but we'll need to:
-1. Copy our private key to the jumpbox after deployment
-2. Update our SSH config with actual IP addresses
-3. Test connectivity to all nodes
+Our Terraform setup handles most of this automatically, but we'll need to copy our private key to the jumpbox after deployment
 
 ## What's Next?
 

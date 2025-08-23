@@ -4,16 +4,22 @@
 
 So, I decided to tackle one of the most notorious learning challenges in the Kubernetes world - Kelsey Hightower's "Kubernetes the Hard Way." But here's the thing: I'm a big fan of Infrastructure as Code, so I thought, "Why not make this a bit more... modern?"
 
+![Kelsey HighTower](img/doc-images/kelsey-hightower.jpg)
+
 This is my attempt at combining the educational goldmine that is K8s the Hard Way with Terraform automation. Spoiler alert: I learned WAY more than I expected!
 
 ## What I'm Actually Building
 
 Instead of manually clicking around the GCP console (which, let's be honest, gets old fast), I'm using Terraform to spin up the infrastructure, then diving deep into the manual Kubernetes setup. Best of both worlds!
 
+![Terraform GCP](img/doc-images/tf-gcp.png)
 ### My Lab Setup
 I'm running this whole thing on Google Cloud with:
+
 - A jumpbox (because I like having a clean workspace)
+
 - One control plane node (where all the Kubernetes brain stuff happens)
+
 - Two worker nodes (where the actual work gets done)
 
 Nothing fancy - just `e2-small` instances because I'm not made of money! 💸
@@ -23,10 +29,14 @@ Nothing fancy - just `e2-small` instances because I'm not made of money! 💸
 Honestly? I kept hearing people talk about "understanding Kubernetes internals" and felt like I was missing something. Sure, I can `kubectl apply` with the best of them, but what's actually happening under the hood?
 
 Plus, I wanted to get better at:
-- Terraform (because clicking in consoles is so 2020)
+
+- Terraform
+
 - Understanding how all these Kubernetes pieces fit together
-- Documenting my learning (hello, this blog!)
-- Maybe helping someone else who's on the same journey
+
+- Documenting my learning 
+
+- Maybe helping someone else who's on the same journey :)
 
 ## The Learning Curve is Real
 
@@ -78,12 +88,23 @@ Fair warning: Budget a few hours and have coffee ready. ☕
 
 ```
 k8s-the-hardway/
-├── terraform/           # The infrastructure magic
-│   ├── modules/        # Reusable Terraform pieces
-│   └── main.tf         # Where it all comes together
-├── docs/               # This documentation you're reading
-├── machines.txt        # My server inventory
-└── README.md           # All the technical details
+├── terraform/          # Infrastructure as Code configuration
+│   ├── main.tf        # Root Terraform module
+│   ├── variables.tf   # Input variable definitions
+│   ├── outputs.tf     # Output value definitions
+│   ├── providers.tf   # Provider configurations
+│   ├── terraform.tfvars.example  # Example variable values
+│   ├── machines.txt   # Server inventory and connection details
+│   ├── credentials/   # GCP service account keys and hostnames
+│   ├── modules/       # Reusable GCE and network modules
+│   │   ├── gce-instance/  # Compute instance module
+│   │   └── gce-network/   # VPC and firewall module
+│   └── README.md      # Detailed Terraform setup guide
+├── k8s-thw-docs/      # MkDocs blog/documentation site
+│   ├── docs/          # Markdown content
+│   ├── mkdocs.yml     # Site configuration
+│   └── README.md      # Documentation setup guide
+└── README.md          # This overview file
 ```
 
 ## Why Document This?

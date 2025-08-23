@@ -53,7 +53,7 @@ Here's what your `terraform.tfvars` should look like:
 # Your GCP project details
 project_id   = "k8s-thw-yourname-20240816"  # Your actual project ID
 vpc_name     = "k8s-thw-vpc"
-ssh_key      = "~/.ssh/k8s-thw.pub"         # Path to your public key
+ssh_key      = "~/.ssh/id_ed25519.pub"         # Path to your public key
 ssh_username = "yourname"                    # Your username
 sa_account   = "k8s-tf"                     # Service account name
 boot_disk    = "pd-balanced"
@@ -126,10 +126,13 @@ terraform plan
 ```
 
 This shows you exactly what resources will be created. Look for:
+
 - 4 compute instances (jumpbox, server, node-0, node-1)
 - 4 static IP addresses
 - 1 VPC network
 - Multiple firewall rules
+
+![Terraform Plan Results](../img/doc-images/terraform-plan.png)
 
 ### 3. Deploy the Infrastructure
 ```bash
@@ -194,12 +197,12 @@ vm_ips = {
 ### 2. Verify in GCP Console
 Check the [GCP Console](https://console.cloud.google.com/compute/instances) to see your shiny new VMs!
 
+![4 VMs](../img/doc-images/4-vms.png)
+
 ### 3. Test SSH Connectivity
 ```bash
 # Test connection to jumpbox (replace with your actual IP)
-ssh -i ~/.ssh/k8s-thw root@JUMPBOX_IP
-
-# If successful, you should see the Ubuntu welcome message
+ssh root@JUMPBOX_IP
 ```
 
 ## Create the machines.txt File
@@ -207,13 +210,20 @@ ssh -i ~/.ssh/k8s-thw root@JUMPBOX_IP
 The Kubernetes The Hard Way tutorial expects a `machines.txt` file. Let's create it:
 
 ```bash
-# Create machines.txt with your actual IPs
-cat > machines.txt << EOF
-$(terraform output -raw vm_ips | grep jumpbox | cut -d'"' -f4) jumpbox.kubernetes.local jumpbox
-$(terraform output -raw vm_ips | grep server | cut -d'"' -f4) server.kubernetes.local server
-$(terraform output -raw vm_ips | grep node-0 | cut -d'"' -f4) node-0.kubernetes.local node-0 10.200.0.0/24
-$(terraform output -raw vm_ips | grep node-1 | cut -d'"' -f4) node-1.kubernetes.local node-1 10.200.1.0/24
-EOF
+# Create machines.txt with your actual IPs and project-specific hostnames
+# Note: GCP uses internal FQDN format: {instance}.{zone}.c.{project-id}.internal
+# This example uses project ID 'k8s-thehardway-465822' - replace with your project ID
+
+# Get your project ID
+PROJECT_ID=$(gcloud config get-value project)
+ZONE="europe-west4-a"  # or your chosen zone
+
+# Create machines.txt with dynamic hostnames
+terraform output -json vm_ips | jq -r --arg project_id "$PROJECT_ID" --arg zone "$ZONE" '
+  .server + " server." + $zone + ".c." + $project_id + ".internal server", 
+  ."node-0" + " node-0." + $zone + ".c." + $project_id + ".internal node-0 10.200.0.0/24",
+  ."node-1" + " node-1." + $zone + ".c." + $project_id + ".internal node-1 10.200.1.0/24"
+' > machines.txt
 
 # Verify the file looks correct
 cat machines.txt
@@ -225,18 +235,18 @@ Now we need to copy our SSH key to the jumpbox so we can access other machines:
 
 ```bash
 # Copy your private key to the jumpbox
-scp -i ~/.ssh/k8s-thw ~/.ssh/k8s-thw root@JUMPBOX_IP:/root/.ssh/
-scp -i ~/.ssh/k8s-thw ~/.ssh/k8s-thw.pub root@JUMPBOX_IP:/root/.ssh/
+scp ~/.ssh/id_ed25519 root@JUMPBOX_IP:/root/.ssh/
+scp ~/.ssh/id_ed25519.pub root@JUMPBOX_IP:/root/.ssh/
 
 # Copy machines.txt to jumpbox
-scp -i ~/.ssh/k8s-thw machines.txt root@JUMPBOX_IP:~/
+scp machines.txt root@JUMPBOX_IP:~/
 
 # SSH to jumpbox and set permissions
-ssh -i ~/.ssh/k8s-thw root@JUMPBOX_IP
+ssh root@JUMPBOX_IP
 
 # On the jumpbox, set correct permissions
-chmod 600 /root/.ssh/k8s-thw
-chmod 644 /root/.ssh/k8s-thw.pub
+chmod 600 /root/.ssh/id_ed25519
+chmod 644 /root/.ssh/id_ed25519.pub
 ```
 
 ## Final Connectivity Test
@@ -245,9 +255,9 @@ From the jumpbox, test access to all cluster nodes:
 
 ```bash
 # Test SSH to all machines (run this on the jumpbox)
-while read IP FQDN HOST SUBNET; do
+while read IP FQDN HOST remainder; do
   echo "Testing connection to $HOST ($IP)..."
-  ssh -i /root/.ssh/k8s-thw -o StrictHostKeyChecking=no root@${IP} hostname
+  ssh -o StrictHostKeyChecking=no root@${IP} hostname < /dev/null
 done < machines.txt
 ```
 

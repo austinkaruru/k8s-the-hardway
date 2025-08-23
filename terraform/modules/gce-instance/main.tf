@@ -72,36 +72,7 @@ resource "google_compute_instance" "vm" {
     
     # Remove any existing hostname override files
     rm -f /etc/hostname.override
-    
-    # Set the custom hostname based on node name - PERMANENT SETTING
-    case "${var.node_name}" in
-        "server")
-            echo "server.kubernetes.local" > /etc/hostname
-            hostnamectl set-hostname server.kubernetes.local
-            sed -i '/127.0.1.1/d' /etc/hosts
-            echo "127.0.1.1 server.kubernetes.local server" >> /etc/hosts
-            ;;
-        "node-0")
-            echo "node-0.kubernetes.local" > /etc/hostname  
-            hostnamectl set-hostname node-0.kubernetes.local
-            sed -i '/127.0.1.1/d' /etc/hosts
-            echo "127.0.1.1 node-0.kubernetes.local node-0" >> /etc/hosts
-            ;;
-        "node-1")
-            echo "node-1.kubernetes.local" > /etc/hostname
-            hostnamectl set-hostname node-1.kubernetes.local
-            sed -i '/127.0.1.1/d' /etc/hosts
-            echo "127.0.1.1 node-1.kubernetes.local node-1" >> /etc/hosts
-            ;;
-        "jumpbox")
-            echo "jumpbox.kubernetes.local" > /etc/hostname
-            hostnamectl set-hostname jumpbox.kubernetes.local
-            sed -i '/127.0.1.1/d' /etc/hosts
-            echo "127.0.1.1 jumpbox.kubernetes.local jumpbox" >> /etc/hosts
-            ;;
-    esac
-    
-    # Make sure hostname persists across reboots
+  
     systemctl restart systemd-hostnamed
     
     # Create a systemd service to enforce hostname on boot (belt and suspenders approach)

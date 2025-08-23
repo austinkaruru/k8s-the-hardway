@@ -59,12 +59,12 @@ We'll configure pod networking so containers can communicate across nodes.
 ### Set Up Your Workspace
 ```bash
 # SSH to the jumpbox - this is our command center
-ssh -i ~/.ssh/k8s-thw root@JUMPBOX_IP
+ssh root@JUMPBOX_IP
 
 # Verify we can reach all nodes
 while read IP FQDN HOST SUBNET; do
   echo "Testing $HOST..."
-  ssh -i /root/.ssh/k8s-thw -o StrictHostKeyChecking=no root@${IP} hostname
+  ssh -o StrictHostKeyChecking=no root@${IP} hostname < /dev/null
 done < machines.txt
 ```
 
@@ -72,11 +72,7 @@ done < machines.txt
 ```bash
 # Install tools we'll need on the jumpbox
 apt update
-apt install -y wget curl
-
-# Create a workspace directory
-mkdir -p ~/k8s-setup
-cd ~/k8s-setup
+apt install -y wget curl vim openssl git
 ```
 
 ## The Learning Mindset
@@ -105,7 +101,6 @@ cd ~/k8s-setup
 - **Time investment** - this isn't a quick tutorial
 - **Attention to detail** - small mistakes cascade
 - **Patience required** - things will break, and that's okay
-- **Documentation diving** - you'll read a lot of man pages
 
 ## Success Tips
 
@@ -128,12 +123,14 @@ The original [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubern
 
 ### Infrastructure Automation
 Unlike the original tutorial, we used Terraform to create our infrastructure. This means:
+
 - ✅ Consistent, reproducible environment
 - ✅ Easy to tear down and rebuild if needed
 - ✅ Infrastructure as Code best practices
 
 ### Documentation Focus
 I'm documenting not just the steps, but:
+
 - Why each step is necessary
 - What can go wrong
 - How to troubleshoot issues
@@ -143,7 +140,7 @@ I'm documenting not just the steps, but:
 
 The infrastructure is ready, the tools are installed, and we have a solid foundation. 
 
-Let's start with [creating our Certificate Authority](certificates.md) - the security foundation of our cluster!
+Let's start with [setting up the Jumpbox Server](jumpbox.md) - the security foundation of our cluster!
 
 Remember: this is a journey, not a race. Take your time, understand each step, and don't be afraid to experiment.
 

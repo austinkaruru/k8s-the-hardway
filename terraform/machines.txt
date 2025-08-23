@@ -1,3 +1,3 @@
-34.141.244.226   server.europe-west4-a.c.k8s-thehardway-465822.internal server 
-34.12.26.75   node-0.europe-west4-a.c.k8s-thehardway-465822.internal node-0 10.200.0.0/24 
-34.34.95.107 node-1.europe-west4-a.c.k8s-thehardway-465822.internal node-1 10.200.1.0/24 
+34.90.21.90 server.europe-west4-a.c.k8s-thehardway-465822.internal server
+34.147.42.135 node-0.europe-west4-a.c.k8s-thehardway-465822.internal node-0 10.200.0.0/24
+34.12.133.254 node-1.europe-west4-a.c.k8s-thehardway-465822.internal node-1 10.200.1.0/24

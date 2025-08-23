@@ -233,13 +233,25 @@ terraform output vm_ips
 After successful deployment, prepare for the Kubernetes tutorial:
 
 ### 1. Create machines.txt File
+
+**Option A: Use the helper script (Recommended)**
+```bash
+# Automatically generates machines.txt with correct project-specific hostnames
+./generate-machines.sh
+```
+
+**Option B: Manual creation**
 Create a `machines.txt` file with your instance IPs (get from `terraform output`):
 ```bash
 # Format: IPV4_ADDRESS FQDN HOSTNAME POD_SUBNET
-34.90.50.182 server.kubernetes.local server
-34.13.164.225 node-0.kubernetes.local node-0 10.200.0.0/24
-34.32.227.137 node-1.kubernetes.local node-1 10.200.1.0/24
+# Note: GCP uses internal FQDN format: {instance}.{zone}.c.{project-id}.internal
+# Replace 'k8s-thehardway-465822' with your actual project ID
+34.90.50.182 server.europe-west4-a.c.k8s-thehardway-465822.internal server
+34.13.164.225 node-0.europe-west4-a.c.k8s-thehardway-465822.internal node-0 10.200.0.0/24
+34.32.227.137 node-1.europe-west4-a.c.k8s-thehardway-465822.internal node-1 10.200.1.0/24
 ```
+
+> **Important**: The hostnames shown above use project ID `k8s-thehardway-465822`. Replace this with your actual GCP project ID. Your hostnames will follow the pattern: `{instance}.{zone}.c.{your-project-id}.internal`
 
 ### 2. Setup SSH Access from Jumpbox
 ```bash
